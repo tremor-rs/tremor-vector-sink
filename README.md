@@ -97,16 +97,11 @@ distribute to vector for file-based storage.
 ```trickle
 select
   match event of
-    case r=%{ message ~= json||} => 
-      match r.message of
-        case %{ present application, present date, present message } =>
-          { "ok": merge event of { "host": system::hostname() } end }
-        default => { "error": "invalid", "got": event }
-      end
-    default => { "error": "malformed", "got": event }
+    case %{ present application, present date, present message } =>
+      { "ok": merge event of { "host": system::hostname() } end }
+    default => { "error": "invalid", "got": event }
   end
 from in into out;
-
 ```
 
 ## Run vector and tremor side by side
