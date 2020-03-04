@@ -1,0 +1,18 @@
+# Use a file based data source
+[sinks.out]
+  type = "file"
+  inputs = ["tcp"]
+  path = "received-%Y-%m-%d.log"
+  encoding = "ndjson"
+  healthcheck = true 
+
+[sinks.console]
+  type = "console"
+  encoding = "json"
+  inputs = [ "tcp" ]
+
+[sources.tcp]
+  type = "socket"
+  address = "0.0.0.0:8888"
+  mode = "tcp"
+  host_key = "host" # default

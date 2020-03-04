@@ -1,0 +1,29 @@
+onramp:
+  - id: source
+    type: tcp
+    preprocessors:
+      - lines
+    codec: json
+    config:
+      host: 127.0.0.1
+      port: 8880
+
+offramp:
+  - id: vector
+    type: tcp
+    codec: json
+    postprocessors:
+      - lines
+    config:
+      host: "localhost"
+      port: 8888
+
+binding:
+  - id: main
+    links:
+      '/onramp/source/{instance}/out': [ '/pipeline/logic/{instance}/in' ]
+      '/pipeline/logic/{instance}/out': [ '/offramp/system::stdout/system/in', '/offramp/vector/{instance}/in' ]
+
+mapping:
+  /binding/main/01:
+    instance: "01"
